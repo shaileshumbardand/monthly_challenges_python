@@ -14,7 +14,7 @@ monthly_challenges = {
     "september": "This is september",
     "october": "This is october",
     "november": "This is november",
-    "december": "This is december",
+    "december": None,
 }
 
 
@@ -32,16 +32,14 @@ def monthly_challenge_by_number(request, month):
 def monthly_challenge(request, month):
     try:
         challenge_text = monthly_challenges[month]
-        response_data = f'<h1>{challenge_text}</h1>'
-        response_data = render_to_string("challenges/monthly_challenge.html")
-        return HttpResponse(response_data)
+        return render(request, "challenges/monthly_challenge.html", {
+            "text": challenge_text,
+            "month": month
+        })
     except:
         return HttpResponseNotFound("This month is not supported!")
 
+
 def index(request):
     months = list(monthly_challenges.keys())
-    list_month = ""
-    for month in months:
-        redirect_path = reverse("month-challenge", args=[month])
-        list_month += f"<li><a href=\"{redirect_path}\">{month.capitalize()}</a></li>"
-    return HttpResponse(list_month)
+    return render(request, "challenges/index.html", {"months": months})
