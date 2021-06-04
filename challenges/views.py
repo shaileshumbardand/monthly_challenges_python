@@ -37,7 +37,8 @@ def monthly_challenge(request, month):
             "month": month
         })
     except:
-        return HttpResponseNotFound("This month is not supported!")
+        response_data = render_to_string("404.html")
+        return HttpResponseNotFound(response_data)
 
 
 def index(request):
